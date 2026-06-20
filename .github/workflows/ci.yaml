@@ -9,6 +9,10 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+    
+    defaults:
+     run:
+      working-directory: quotehub
 
     steps:
     - name: Checkout code
