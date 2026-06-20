@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quotehub-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quotehub
+  template:
+    metadata:
+      labels:
+        app: quotehub
+    spec:
+      containers:
+      - name: quotehub
+        image: quotehub:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+
+
+# so for this i can consider that for the kube there are mailnly 
+# apiVersion - where apiVersion: apps/v1 - This specifies the version of the Kubernetes API that you are using to create the Deployment resource. 
+# kind - where kind: Deployment - This indicates that you are creating a Deployment resource, which is used to manage a set of identical pods in Kubernetes.
+# metadata - where metadata: This section contains metadata about the Deployment
+# spec - where spec: This section defines the desired state of the Deployment, including the number of replicas, the selector for matching pods, and the template for creating new pods.
+# selectors - where selector: This section defines how the Deployment will identify the pods it manages. In this case, it matches pods with the label app: quotehub.
+# template - where template: This section defines the pod template that will be used to create new pods
+# containers - where containers: This section defines the container(s) that will run in the pods created by the Deployment. In this case, it specifies a single container named quotehub, using the image quotehub:v1, and exposing port 5000.
+# readinessProbe - where readinessProbe: This section defines a readiness probe for the container, which checks if the application is ready to accept traffic. It uses an HTTP GET request to the /health endpoint on port 5000, with an initial delay of 5 seconds and a period of 5 seconds.
+# livenessProbe - where livenessProbe: This section defines a liveness probe for the container, which checks if the application is still running. It also uses an HTTP GET request to the /health endpoint on port 5000, with an initial delay of 10 seconds and a period of 10 seconds. If the liveness probe fails, Kubernetes will restart the container.
