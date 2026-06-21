@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: quotehub
-        image: quotehub:v1
-        imagePullPolicy: Never
+        image: abhi2911/quotehub:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         readinessProbe:
